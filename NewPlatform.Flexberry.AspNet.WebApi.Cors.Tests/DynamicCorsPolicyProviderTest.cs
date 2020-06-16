@@ -6,16 +6,14 @@
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.SelfHost;
+    using Xunit;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class DynamicCorsPolicyProviderTest
     {
         /// <summary>
         /// Test default behavior.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestOrigin()
         {
             // Arrange.
@@ -37,8 +35,8 @@
 
                     // Assert.
                     IEnumerable<string> origins;
-                    Assert.IsTrue(message.Headers.TryGetValues("Access-Control-Allow-Origin", out origins));
-                    Assert.AreEqual(requestOrigin, origins.First());
+                    Assert.True(message.Headers.TryGetValues("Access-Control-Allow-Origin", out origins));
+                    Assert.Equal(requestOrigin, origins.First());
                 }
                 finally
                 {
@@ -50,7 +48,7 @@
         /// <summary>
         /// Test the constructor with enabled <see cref="CorsPolicy.SupportsCredentials"/>.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSupportsCredentials()
         {
             // Arrange.
@@ -71,8 +69,8 @@
 
                     // Assert.
                     IEnumerable<string> credentials;
-                    Assert.IsTrue(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
-                    Assert.AreEqual("true", credentials.First());
+                    Assert.True(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
+                    Assert.Equal("true", credentials.First());
                 }
                 finally
                 {
@@ -84,7 +82,7 @@
         /// <summary>
         /// Test the constructor with not enabled <see cref="CorsPolicy.SupportsCredentials"/>.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestUnsupportedCredentials()
         {
             // Arrange.
@@ -105,7 +103,7 @@
 
                     // Assert.
                     IEnumerable<string> credentials;
-                    Assert.IsFalse(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
+                    Assert.False(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
                 }
                 finally
                 {
