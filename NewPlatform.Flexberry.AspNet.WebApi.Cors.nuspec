@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>NewPlatform.Flexberry.AspNet.WebApi.Cors</id>
+    <version>1.1.1</version>
+    <title>Flexberry ASP.NET WebAPI CORS extensions</title>
+    <authors>New Platform Ltd.</authors>
+    <owners>New Platform Ltd.</owners>
+    <licenseUrl>http://flexberry.net</licenseUrl>
+    <projectUrl>http://flexberry.net</projectUrl>
+    <iconUrl>http://flexberry.net/portals/_default/skins/flexerry/images/logo_last.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Flexberry ASP.NET WebAPI CORS extensions.</description>
+    <releaseNotes>Added CorsPolicy with SupportsCredentials.</releaseNotes>
+    <copyright>Copyright © New Platform Ltd. 2017</copyright>
+    <tags>Flexberry</tags>
+    <dependencies>
+        <dependency id="Microsoft.AspNet.WebApi.Cors" version="5.2.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="NewPlatform.Flexberry.AspNet.WebApi.Cors.dll" target="lib\net45\NewPlatform.Flexberry.AspNet.WebApi.Cors.dll" />
+    <file src="NewPlatform.Flexberry.AspNet.WebApi.Cors.xml" target="lib\net45\NewPlatform.Flexberry.AspNet.WebApi.Cors.xml" />
+  </files>
+</package>
