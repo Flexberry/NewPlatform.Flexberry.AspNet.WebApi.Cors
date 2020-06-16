@@ -1,5 +1,2 @@
 language: csharp
 solution: NewPlatform.Flexberry.AspNet.WebApi.Cors.sln
-script:
-  - msbuild /p:Configuration=Debug "NewPlatform.Flexberry.AspNet.WebApi.Cors.sln"
-  - mono ./packages/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests/bin/Debug/NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests.dll
