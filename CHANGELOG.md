@@ -10,3 +10,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Changed
+* csproj format to `Microsoft.NET.Sdk`.
+* upgrade `Microsoft.AspNet.WebApi.Cors` to version 5.2.7.

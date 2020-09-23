@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewPlatform.Flexberry.AspNet.WebApi.Cors", "NewPlatform.Flexberry.AspNet.WebApi.Cors\NewPlatform.Flexberry.AspNet.WebApi.Cors.csproj", "{0DB825F1-DA08-41E5-AFD4-AB4EB9A551A9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet Package", "NuGet Package", "{3CE5D1D2-5611-4278-BC62-B4F786DCFB66}"
-	ProjectSection(SolutionItems) = preProject
-		NewPlatform.Flexberry.AspNet.WebApi.Cors.nuspec = NewPlatform.Flexberry.AspNet.WebApi.Cors.nuspec
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests", "NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests\NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests.csproj", "{1D38B2CA-D97F-49A2-92E9-5EEBC0F649C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Open Source", "Open Source", "{2CD35F05-C8AC-4121-825A-B6B12D5DE492}"
