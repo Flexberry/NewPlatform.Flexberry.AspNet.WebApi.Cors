@@ -10,3 +10,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Changed
+* csproj format to `Microsoft.NET.Sdk`.

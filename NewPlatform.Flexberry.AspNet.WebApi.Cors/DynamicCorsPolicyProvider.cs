@@ -1,5 +1,6 @@
 ﻿namespace NewPlatform.Flexberry.AspNet.WebApi.Cors
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -17,32 +18,44 @@
         /// <summary>
         /// Keeps value for <see cref="CorsPolicy.SupportsCredentials"/>.
         /// </summary>
-        private bool _supportsCredentials;
+        private readonly bool supportsCredentials;
 
         /// <summary>
-        /// Default constructor for <see cref="DynamicCorsPolicyProvider"/>.
+        /// Initializes a new instance of the <see cref="DynamicCorsPolicyProvider"/> class.
         /// </summary>
         /// <param name="supportsCredentials">Value for <see cref="CorsPolicy.SupportsCredentials"/>.</param>
         public DynamicCorsPolicyProvider(bool supportsCredentials = false)
         {
-            _supportsCredentials = supportsCredentials;
+            this.supportsCredentials = supportsCredentials;
         }
 
         /// <summary>
-        /// Gets the <see cref="T:System.Web.Cors.CorsPolicy" />.
+        /// Gets the <see cref="CorsPolicy" />.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The <see cref="T:System.Web.Cors.CorsPolicy" />.</returns>
+        /// <returns>The <see cref="CorsPolicy" />.</returns>
         public Task<CorsPolicy> GetCorsPolicyAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var policy = new CorsPolicy() { AllowAnyHeader = true, AllowAnyMethod = true, SupportsCredentials = _supportsCredentials };
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var policy = new CorsPolicy
+            {
+                AllowAnyHeader = true,
+                AllowAnyMethod = true,
+                SupportsCredentials = supportsCredentials,
+            };
 
             IEnumerable<string> origins;
             if (!request.Headers.TryGetValues("Origin", out origins))
+            {
                 return Task.FromResult(policy);
-            
-            foreach (var origin in origins.Where(s => !string.IsNullOrEmpty(s)))
+            }
+
+            foreach (string origin in origins.Where(s => !string.IsNullOrEmpty(s)))
             {
                 policy.Origins.Add(origin);
             }

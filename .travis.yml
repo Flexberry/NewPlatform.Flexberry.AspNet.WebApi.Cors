@@ -1,5 +1,11 @@
 language: csharp
 solution: NewPlatform.Flexberry.AspNet.WebApi.Cors.sln
+env:
+  global:
+    - CONFIGURATION: Debug
+install:
+  - nuget restore "NewPlatform.Flexberry.AspNet.WebApi.Cors.sln" -NonInteractive
+  - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory packages
 script:
-  - msbuild /p:Configuration=Debug "NewPlatform.Flexberry.AspNet.WebApi.Cors.sln"
-  - mono ./packages/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests/bin/Debug/NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests.dll
+  - msbuild /verbosity:quiet /p:WarningLevel=0 /p:Configuration=$CONFIGURATION  "NewPlatform.Flexberry.AspNet.WebApi.Cors.sln"
+  - mono ./packages/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests/bin/$CONFIGURATION/net461/NewPlatform.Flexberry.AspNet.WebApi.Cors.Tests.dll
