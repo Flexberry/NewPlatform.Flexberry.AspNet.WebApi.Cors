@@ -4,113 +4,106 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Web.Cors;
     using System.Web.Http;
     using System.Web.Http.SelfHost;
+    using Xunit;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class DynamicCorsPolicyProviderTest
     {
         /// <summary>
         /// Test default behavior.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestOrigin()
         {
             // Arrange.
-            using (var config = new HttpSelfHostConfiguration(new Uri("http://localhost:1234/")))
-            using (var server = new HttpSelfHostServer(config))
-            using (var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost:8989/") })
+            using var config = new HttpSelfHostConfiguration(new Uri("http://localhost:9898/"));
+            using var server = new HttpSelfHostServer(config);
+            using var client = new HttpClient(server, false) { BaseAddress = new Uri("http://localhost:8989/") };
+            config.EnableCors(new DynamicCorsPolicyProvider());
+
+            string requestOrigin = $"http://localhost:{new Random().Next(1000, 9999)}/";
+            client.DefaultRequestHeaders.Add("Origin", requestOrigin);
+
+            try
             {
-                config.EnableCors(new DynamicCorsPolicyProvider());
+                server.OpenAsync().Wait();
 
-                var requestOrigin = $"http://localhost:{new Random().Next(1000, 9999)}/";
-                client.DefaultRequestHeaders.Add("Origin", requestOrigin);
+                // Act.
+                var message = client.GetAsync(new Uri("http://localhost:8989")).Result;
 
-                try
-                {
-                    server.OpenAsync().Wait();
-
-                    // Act.
-                    var message = client.GetAsync(new Uri("http://localhost:8989")).Result;
-
-                    // Assert.
-                    IEnumerable<string> origins;
-                    Assert.IsTrue(message.Headers.TryGetValues("Access-Control-Allow-Origin", out origins));
-                    Assert.AreEqual(requestOrigin, origins.First());
-                }
-                finally
-                {
-                    server.CloseAsync().Wait();
-                }
+                // Assert.
+                IEnumerable<string> origins;
+                Assert.True(message.Headers.TryGetValues("Access-Control-Allow-Origin", out origins));
+                Assert.Equal(requestOrigin, origins.First());
+            }
+            finally
+            {
+                server.CloseAsync().Wait();
             }
         }
 
         /// <summary>
         /// Test the constructor with enabled <see cref="CorsPolicy.SupportsCredentials"/>.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSupportsCredentials()
         {
             // Arrange.
-            using (var config = new HttpSelfHostConfiguration(new Uri("http://localhost:6500/")))
-            using (var server = new HttpSelfHostServer(config))
-            using (var client = new HttpClient(server, false))
+            using var config = new HttpSelfHostConfiguration(new Uri("http://localhost:6500/"));
+            using var server = new HttpSelfHostServer(config);
+            using var client = new HttpClient(server, false);
+            config.EnableCors(new DynamicCorsPolicyProvider(true));
+
+            client.DefaultRequestHeaders.Add("Origin", "http://localhost:4200/");
+
+            try
             {
-                config.EnableCors(new DynamicCorsPolicyProvider(true));
+                server.OpenAsync().Wait();
 
-                client.DefaultRequestHeaders.Add("Origin", "http://localhost:4200/");
+                // Act.
+                var message = client.GetAsync(new Uri("http://localhost:6500")).Result;
 
-                try
-                {
-                    server.OpenAsync().Wait();
-
-                    // Act.
-                    var message = client.GetAsync(new Uri("http://localhost:6500")).Result;
-
-                    // Assert.
-                    IEnumerable<string> credentials;
-                    Assert.IsTrue(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
-                    Assert.AreEqual("true", credentials.First());
-                }
-                finally
-                {
-                    server.CloseAsync().Wait();
-                }
+                // Assert.
+                IEnumerable<string> credentials;
+                Assert.True(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
+                Assert.Equal("true", credentials.First());
+            }
+            finally
+            {
+                server.CloseAsync().Wait();
             }
         }
 
         /// <summary>
         /// Test the constructor with not enabled <see cref="CorsPolicy.SupportsCredentials"/>.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestUnsupportedCredentials()
         {
             // Arrange.
-            using (var config = new HttpSelfHostConfiguration(new Uri("http://localhost:6500/")))
-            using (var server = new HttpSelfHostServer(config))
-            using (var client = new HttpClient(server, false))
+            using var config = new HttpSelfHostConfiguration(new Uri("http://localhost:6500/"));
+            using var server = new HttpSelfHostServer(config);
+            using var client = new HttpClient(server, false);
+            config.EnableCors(new DynamicCorsPolicyProvider());
+
+            client.DefaultRequestHeaders.Add("Origin", "http://localhost:4200/");
+
+            try
             {
-                config.EnableCors(new DynamicCorsPolicyProvider());
+                server.OpenAsync().Wait();
 
-                client.DefaultRequestHeaders.Add("Origin", "http://localhost:4200/");
+                // Act.
+                var message = client.GetAsync(new Uri("http://localhost:6500")).Result;
 
-                try
-                {
-                    server.OpenAsync().Wait();
-
-                    // Act.
-                    var message = client.GetAsync(new Uri("http://localhost:6500")).Result;
-
-                    // Assert.
-                    IEnumerable<string> credentials;
-                    Assert.IsFalse(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
-                }
-                finally
-                {
-                    server.CloseAsync().Wait();
-                }
+                // Assert.
+                IEnumerable<string> credentials;
+                Assert.False(message.Headers.TryGetValues("Access-Control-Allow-Credentials", out credentials));
+            }
+            finally
+            {
+                server.CloseAsync().Wait();
             }
         }
     }
