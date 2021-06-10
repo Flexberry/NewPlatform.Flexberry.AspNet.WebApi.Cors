@@ -4,10 +4,10 @@
     <Description>Flexberry ASP.NET WebAPI CORS extensions.</Description>
     <Title>Flexberry ASP.NET WebAPI CORS extensions</Title>
     <Authors>New Platform Ltd</Authors>
-    <Copyright>Copyright New Platform Ltd 2019</Copyright>
+    <Copyright>Copyright New Platform Ltd 2021</Copyright>
     <Company>New Platform Ltd</Company>
     <PackageTags>Flexberry</PackageTags>
-    <Version>1.2.0-alpha01</Version>
+    <Version>1.2.0</Version>
     <Product>Flexberry PLATFORM</Product>
     <PackageId>NewPlatform.Flexberry.AspNet.WebApi.Cors</PackageId>
     <PackageProjectUrl>https://flexberry.net</PackageProjectUrl>
