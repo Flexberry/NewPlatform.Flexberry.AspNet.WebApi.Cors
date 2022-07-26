@@ -11,6 +11,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [1.3.0 - 2022.07.26]
+
+### Changed
+
+* upgrade `Microsoft.AspNet.WebApi.Cors` to version 5.2.9.
+
 ## [1.2.0 - 2021.06.10]
 
 ### Changed
